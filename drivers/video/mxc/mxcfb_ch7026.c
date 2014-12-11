@@ -54,15 +54,17 @@ static struct regulator *analog_reg;
 
 	/* 8 800x600-60 VESA */
 static struct fb_videomode mode = {
-	NULL, 60, 800, 600, 25000, 88, 40, 23, 1, 128, 4,
-	FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
-	FB_VMODE_NONINTERLACED, FB_MODE_IS_VESA
+//	NULL, 60, 800, 600, 25000, 88, 40, 23, 1, 128, 4,
+//	FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+//	FB_VMODE_NONINTERLACED, FB_MODE_IS_VESA
+	"MYZR-VGA", 60, 1024, 768, 15384, 180, 4, 29, 3, 136, 6,
+	  0, FB_VMODE_NONINTERLACED, FB_MODE_IS_VESA
 };
 
 static void lcd_init_fb(struct fb_info *info)
 {
 	struct fb_var_screeninfo var;
-
+printk("%s\n",__func__);
 	memset(&var, 0, sizeof(var));
 
 	fb_videomode_to_var(&var, &mode);
@@ -115,8 +117,8 @@ static int __devinit lcd_probe(struct device *dev)
 	int ret = 0;
 	int i;
 	struct mxc_lcd_platform_data *plat = dev->platform_data;
-
-	if (plat) {
+printk("%s\n",__func__);
+/*	if (plat) {
 
 		io_reg = regulator_get(dev, plat->io_reg);
 		if (!IS_ERR(io_reg)) {
@@ -146,13 +148,14 @@ static int __devinit lcd_probe(struct device *dev)
 		if (lcd_reset)
 			lcd_reset();
 	}
-
+*/
 	for (i = 0; i < num_registered_fb; i++) {
-		if (strcmp(registered_fb[i]->fix.id, "DISP3 BG - DI1") == 0) {
+		if (strcmp(registered_fb[i]->fix.id, "DISP3 BG") == 0) {
+		printk("registered_fb is %s\n",registered_fb[i]->fix.id);
 			ret = lcd_init();
 			if (ret < 0)
 				goto err;
-
+			
 			lcd_init_fb(registered_fb[i]);
 			fb_show_logo(registered_fb[i], 0);
 			lcd_poweron(registered_fb[i]);
@@ -160,6 +163,7 @@ static int __devinit lcd_probe(struct device *dev)
 	}
 
 	fb_register_client(&nb);
+printk("ch7026 probe is completed!!!\n");
 	return 0;
 err:
 	if (io_reg)
@@ -202,65 +206,69 @@ static int ch7026_resume(struct i2c_client *client)
 }
 
 u8 reg_init[][2] = {
-	{ 0x02, 0x01 },
-	{ 0x02, 0x03 },
-	{ 0x03, 0x00 },
-	{ 0x06, 0x6B },
-	{ 0x08, 0x08 },
-	{ 0x09, 0x80 },
-	{ 0x0C, 0x0A },
-	{ 0x0D, 0x89 },
-	{ 0x0F, 0x23 },
-	{ 0x10, 0x20 },
-	{ 0x11, 0x20 },
-	{ 0x12, 0x40 },
-	{ 0x13, 0x28 },
-	{ 0x14, 0x80 },
-	{ 0x15, 0x52 },
-	{ 0x16, 0x58 },
-	{ 0x17, 0x74 },
-	{ 0x19, 0x01 },
-	{ 0x1A, 0x04 },
-	{ 0x1B, 0x23 },
-	{ 0x1C, 0x20 },
-	{ 0x1D, 0x20 },
-	{ 0x1F, 0x28 },
-	{ 0x20, 0x80 },
-	{ 0x21, 0x12 },
-	{ 0x22, 0x58 },
-	{ 0x23, 0x74 },
-	{ 0x25, 0x01 },
-	{ 0x26, 0x04 },
-	{ 0x37, 0x20 },
-	{ 0x39, 0x20 },
-	{ 0x3B, 0x20 },
-	{ 0x41, 0xA2 },
-	{ 0x4D, 0x03 },
-	{ 0x4E, 0x13 },
-	{ 0x4F, 0xB1 },
-	{ 0x50, 0x3B },
-	{ 0x51, 0x54 },
-	{ 0x52, 0x12 },
-	{ 0x53, 0x13 },
-	{ 0x55, 0xE5 },
-	{ 0x5E, 0x80 },
-	{ 0x69, 0x64 },
-	{ 0x7D, 0x62 },
-	{ 0x04, 0x00 },
-	{ 0x06, 0x69 },
+{ 0x02, 0x01 },
+{ 0x02, 0x03 },
+{ 0x03, 0x00 },
+{ 0x04, 0x39 },
+{ 0x06, 0x6B },
+{ 0x07, 0x00 },
+{ 0x08, 0x08 },
+{ 0x09, 0x80 },
+{ 0x0C, 0x80 },
+{ 0x0D, 0x89 },
+{ 0x0E, 0xE4 },
+{ 0x0F, 0x2C },
+{ 0x10, 0x00 },
+{ 0x11, 0x40 },
+{ 0x12, 0x40 },
+{ 0x13, 0x04 },
+{ 0x14, 0x88 },
+{ 0x15, 0x5B },
+{ 0x16, 0x00 },
+{ 0x17, 0x26 },
+{ 0x19, 0x03 },
+{ 0x1A, 0x06 },
+{ 0x1B, 0x2C },
+{ 0x1C, 0x00 },
+{ 0x1D, 0x40 },
+{ 0x1F, 0x04 },
+{ 0x20, 0x88 },
+{ 0x21, 0x1B },
+{ 0x22, 0x00 },
+{ 0x23, 0x26 },
+{ 0x25, 0x03 },
+{ 0x26, 0x06 },
+{ 0x37, 0x20 },
+{ 0x39, 0x20 },
+{ 0x3B, 0x20 },
+{ 0x41, 0x9A },
+{ 0x4D, 0x05 },
+{ 0x4E, 0x6A },
+{ 0x4F, 0xAA },
+{ 0x50, 0xAA },
+{ 0x51, 0x4B },
+{ 0x52, 0x12 },
+{ 0x53, 0x13 },
+{ 0x55, 0xE5 },
+{ 0x5E, 0x80 },
+{ 0x69, 0x60 },
+{ 0x7D, 0x62 },
+{ 0x04, 0x38 },
+{ 0x06, 0x69 },
 
-	/*
-	NOTE: The following five repeated sentences are used here to wait memory initial complete, please don't remove...(you could refer to Appendix A of programming guide document (CH7025(26)B Programming Guide Rev2.03.pdf) for detailed information about memory initialization!
-	*/
-	{ 0x03, 0x00 },
-	{ 0x03, 0x00 },
-	{ 0x03, 0x00 },
-	{ 0x03, 0x00 },
-	{ 0x03, 0x00 },
+/*
+NOTE: The following five repeated sentences are used here to wait memory initial complete, please don't remove...(you could refer to Appendix A of programming guide document (CH7025(26)B Programming Guide Rev2.03.pdf or later version) for detailed information about memory initialization! 
+*/
+{ 0x03, 0x00 },
+{ 0x03, 0x00 },
+{ 0x03, 0x00 },
+{ 0x03, 0x00 },
+{ 0x03, 0x00 },
 
-	{ 0x06, 0x68 },
-	{ 0x02, 0x02 },
-	{ 0x02, 0x03 },
+{ 0x06, 0x68 },
+{ 0x02, 0x02 },
+{ 0x02, 0x03 },
+{ 0x04, 0x00 },
 };
 
 #define REGMAP_LENGTH (sizeof(reg_init) / (2*sizeof(u8)))
@@ -273,13 +281,13 @@ static int lcd_init(void)
 {
 	int i;
 	int dat;
-
-	dev_dbg(&ch7026_client->dev, "initializing CH7026\n");
+printk("%s\n",__func__);
+	dev_info(&ch7026_client->dev, "initializing CH7026\n");
 
 	/* read device ID */
 	msleep(100);
 	dat = i2c_smbus_read_byte_data(ch7026_client, 0x00);
-	dev_dbg(&ch7026_client->dev, "read id = 0x%02X\n", dat);
+	dev_info(&ch7026_client->dev, "read id = 0x%02X\n", dat);
 	if (dat != 0x54)
 		return -ENODEV;
 
@@ -301,11 +309,11 @@ static void lcd_poweron(struct fb_info *info)
 {
 	u16 data[4];
 	u32 refresh;
-
+printk("%s\n",__func__);
 	if (lcd_on)
 		return;
 
-	dev_dbg(&ch7026_client->dev, "turning on LCD\n");
+	dev_info(&ch7026_client->dev, "turning on LCD\n");
 
 	data[0] = PICOS2KHZ(info->var.pixclock) / 10;
 	data[2] = info->var.hsync_len + info->var.left_margin +

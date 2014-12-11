@@ -772,10 +772,10 @@ static void imx_pcie_enable_controller(struct device *dev)
 	struct imx_pcie_platform_data *pdata = dev->platform_data;
 
 	/* Enable PCIE power */
-	gpio_request(pdata->pcie_pwr_en, "PCIE POWER_EN");
+//	gpio_request(pdata->pcie_pwr_en, "PCIE POWER_EN");
 
 	/* activate PCIE_PWR_EN */
-	gpio_direction_output(pdata->pcie_pwr_en, 1);
+//	gpio_direction_output(pdata->pcie_pwr_en, 1);
 
 	imx_pcie_clrset(IOMUXC_GPR1_TEST_POWERDOWN, 0 << 18, IOMUXC_GPR1);
 
@@ -851,10 +851,10 @@ static void __init add_pcie_port(void __iomem *base, void __iomem *dbi_base,
 				IOMUXC_GPR1);
 
 		/* Disable PCIE power */
-		gpio_request(pdata->pcie_pwr_en, "PCIE POWER_EN");
+//		gpio_request(pdata->pcie_pwr_en, "PCIE POWER_EN");
 
 		/* activate PCIE_PWR_EN */
-		gpio_direction_output(pdata->pcie_pwr_en, 0);
+//		gpio_direction_output(pdata->pcie_pwr_en, 0);
 
 		imx_pcie_clrset(IOMUXC_GPR1_TEST_POWERDOWN, 1 << 18,
 				IOMUXC_GPR1);

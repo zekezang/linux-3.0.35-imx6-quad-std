@@ -1083,7 +1083,8 @@ static int fec_enet_mii_probe(struct net_device *ndev)
 
 	/* mask with MAC supported features */
 	if (cpu_is_mx6q() || cpu_is_mx6dl())
-		phy_dev->supported &= PHY_GBIT_FEATURES;
+		phy_dev->supported &= PHY_BASIC_FEATURES;
+//		phy_dev->supported &= PHY_GBIT_FEATURES;
 	else
 		phy_dev->supported &= PHY_BASIC_FEATURES;
 

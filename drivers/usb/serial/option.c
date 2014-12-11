@@ -155,7 +155,7 @@ static void option_instat_callback(struct urb *urb);
 #define HUAWEI_PRODUCT_K4510			0x14CB
 #define HUAWEI_PRODUCT_K4511			0x14CC
 #define HUAWEI_PRODUCT_ETS1220			0x1803
-#define HUAWEI_PRODUCT_E353			0x1506
+#define HUAWEI_PRODUCT_E353			0x1573
 #define HUAWEI_PRODUCT_E173S			0x1C05
 
 #define QUANTA_VENDOR_ID			0x0408
