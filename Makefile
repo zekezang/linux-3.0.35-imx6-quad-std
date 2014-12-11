@@ -1,3 +1,10 @@
+#
+#make distclean
+#make imx6_defconfig
+#make
+#
+#
+
 VERSION = 3
 PATCHLEVEL = 0
 SUBLEVEL = 35
@@ -91,6 +98,9 @@ endif
 # The O= assignment takes precedence over the KBUILD_OUTPUT environment
 # variable.
 
+
+ARCH := arm
+CROSS_COMPILE := arm-none-linux-gnueabi-
 
 # KBUILD_SRC is set on invocation of make in OBJ directory
 # KBUILD_SRC is not intended to be used by the regular user (for now)
