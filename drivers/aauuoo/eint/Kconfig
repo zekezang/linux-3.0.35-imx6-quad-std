@@ -1,0 +1,6 @@
+menu "EXT_INT"
+
+config EXT_INT
+	tristate "EXT_INT zekezang"
+	
+endmenu

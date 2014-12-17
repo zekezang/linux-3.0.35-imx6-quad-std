@@ -1,0 +1,1 @@
+obj-$(CONFIG_EXT_INT)	+= GPH32-driver.o

@@ -1425,8 +1425,7 @@ static struct ahci_platform_data mx6q_sabresd_sata_data = {
 };
 #endif
 
-static const struct flexcan_platform_data
-	mx6q_sabresd_flexcan0_pdata __initconst = {
+static const struct flexcan_platform_data mx6q_sabresd_flexcan0_pdata __initconst = {
 //	.transceiver_switch = mx6q_sabresd_flexcan0_switch,
 };
 

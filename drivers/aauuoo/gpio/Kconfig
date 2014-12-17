@@ -1,0 +1,6 @@
+menu "AAUUOO_GPIO"
+
+config AAUUOO_GPIO
+	tristate "GPIO zekezang"
+	
+endmenu

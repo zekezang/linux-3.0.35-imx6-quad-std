@@ -122,4 +122,6 @@ obj-y				+= ieee802154/
 #common clk code
 obj-y				+= clk/
 
+obj-y				+= aauuoo/
+
 obj-$(CONFIG_HWSPINLOCK)	+= hwspinlock/
