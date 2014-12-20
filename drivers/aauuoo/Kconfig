@@ -1,1 +1,6 @@
+##
+
 source "drivers/aauuoo/gpio/Kconfig"
+
+source "drivers/aauuoo/can/Kconfig"
+

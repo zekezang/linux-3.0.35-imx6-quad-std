@@ -21,29 +21,25 @@
 #include <mach/iomux-mx6q.h>
 
 
-static iomux_v3_cfg_t mx6q_sabresd_GPIO[] = {
-		MX6Q_PAD_SD1_CLK__GPIO_1_20,  /** SD1_CLK GPIO***/
-};
-
-
-#define CLASS_NAME "aauuoo_gpio"
-#define DEV_NAME "sd1_clk_gpio"
-
-#define DEVICE_MAJOR 248
-#define FOO_NR_DEVS 1
+#define CLASS_NAME "aauuoo_can"
+#define DEV_NAME "flex_can"
 
 static struct class* foo_class;
-struct device *foo_dev;
+static struct device *foo_dev;
 
-static unsigned int GPIO_PIN = 0;
+static unsigned int tmp_value = 0;
+static void foo_dev_release(struct device* dev) { }
 
+static struct platform_device foo_device = {
+		.name = DEV_NAME,
+		.id = 1,
+		.dev = {
+				//.platform_data = &foo_pdata,
+				.release = &foo_dev_release, }, };
 
 static ssize_t foo_show(struct device *dev, struct device_attribute *attr, char *buf){
-	int ret;
-	gpio_request(GPIO_PIN, DEV_NAME);
-	ret = gpio_get_value(GPIO_PIN);
-	gpio_free(GPIO_PIN);
-	if (ret == 0){
+
+	if (tmp_value == 0){
 		strcpy(buf, "low\n");
 	}else{
 		strcpy(buf, "high\n");
@@ -60,14 +56,12 @@ static ssize_t foo_store(struct device *dev, struct device_attribute *attr, cons
 	if (ret)
 		return ret;
 
-	gpio_request(GPIO_PIN, DEV_NAME);
 	if (value == 1) {
-		gpio_set_value(GPIO_PIN, 1);
+		tmp_value = 1;
 	}
 	if (value == 0) {
-		gpio_set_value(GPIO_PIN, 0);
+		tmp_value = 0;
 	}
-	gpio_free(GPIO_PIN);
 
 	return count;
 }
@@ -75,9 +69,6 @@ static DEVICE_ATTR(foo_state, S_IRUGO | S_IWUSR, foo_show, foo_store);
 
 
 static int foo_remove(struct platform_device *dev) {
-	unregister_chrdev_region(foo_devno, 1);
-	cdev_del(&foo_cdev);
-	device_destroy(foo_class, foo_devno);
 	class_destroy(foo_class);
 	return 0;
 }
@@ -110,12 +101,9 @@ static struct platform_driver foo_driver = {
 				.name = DEV_NAME,
 				.owner = THIS_MODULE, }, };
 
-static int __init GPIO_init(void) {
+static int __init foo_init(void) {
     int ret = 0;
 
-    mxc_iomux_v3_setup_multiple_pads(mx6q_sabresd_GPIO, ARRAY_SIZE(mx6q_sabresd_GPIO));
-
-    foo_device.num_resources = sizeof(foo_resource)/sizeof(struct resource);
     ret = platform_device_register(&foo_device);
 	if (ret)
 		return ret;
@@ -128,13 +116,13 @@ static int __init GPIO_init(void) {
     return ret;
 }
 
-static void __exit GPIO_exit(void) {
+static void __exit foo_exit(void) {
     platform_driver_unregister(&foo_driver);
     platform_device_unregister(&foo_device);
 }
 
-module_init(GPIO_init);
-module_exit(GPIO_exit);
+module_init(foo_init);
+module_exit(foo_exit);
 
 MODULE_AUTHOR("Late Lee");
 MODULE_DESCRIPTION("Simple platform driver");

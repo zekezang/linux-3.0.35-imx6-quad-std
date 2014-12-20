@@ -1,0 +1,6 @@
+menu "AAUUOO_CAN"
+
+config AAUUOO_CAN
+	tristate "CAN zekezang"
+	
+endmenu
