@@ -173,19 +173,19 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 #endif
 
 #undef	_dbgdump
-#ifdef PLATFORM_WINDOWS
-
-	#ifdef PLATFORM_OS_XP
-		#define _dbgdump	DbgPrint
-	#elif defined PLATFORM_OS_CE
-		#define _dbgdump	rtl871x_cedbg
-	#endif
-
-#elif defined PLATFORM_LINUX
-	#define _dbgdump	printk
-#elif defined PLATFORM_FREEBSD
-	#define _dbgdump	printf
-#endif
+//#ifdef PLATFORM_WINDOWS
+//
+//	#ifdef PLATFORM_OS_XP
+//		#define _dbgdump	DbgPrint
+//	#elif defined PLATFORM_OS_CE
+//		#define _dbgdump	rtl871x_cedbg
+//	#endif
+//
+//#elif defined PLATFORM_LINUX
+//	#define _dbgdump	printk
+//#elif defined PLATFORM_FREEBSD
+//	#define _dbgdump	printf
+//#endif
 
 #define DRIVER_PREFIX	"RTL871X: "
 #define DEBUG_LEVEL	(_drv_err_)

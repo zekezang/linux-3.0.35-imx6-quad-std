@@ -260,7 +260,7 @@ static int foo_probe(struct platform_device *dev) {
 	}
 
 	reg = readl(&regs_base->mcr);
-	printk("########can-driver: %d %04X\n", __LINE__, reg);
+	//printk("########can-driver: %d %04X\n", __LINE__, reg);
 
 	foo_class = class_create(THIS_MODULE, CLASS_NAME);
 	if (IS_ERR(foo_class)) {
