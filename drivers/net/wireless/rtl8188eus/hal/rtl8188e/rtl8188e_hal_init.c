@@ -44,7 +44,7 @@ static void iol_mode_enable(PADAPTER padapter, u8 enable)
 		
 		if(padapter->bFWReady == _FALSE)
 		{
-			printk("bFWReady == _FALSE call reset 8051...\n");
+			//printk("bFWReady == _FALSE call reset 8051...\n");
 			_8051Reset88E(padapter);
 		}		
 			
