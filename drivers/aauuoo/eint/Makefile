@@ -1,1 +1,1 @@
-obj-$(CONFIG_EXT_INT)	+= GPH32-driver.o
+obj-$(CONFIG_EXT_INT)	+= GPIO-EINT-driver.o

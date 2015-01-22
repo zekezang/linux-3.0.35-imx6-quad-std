@@ -4,3 +4,5 @@ source "drivers/aauuoo/gpio/Kconfig"
 
 source "drivers/aauuoo/can/Kconfig"
 
+source "drivers/aauuoo/eint/Kconfig"
+

@@ -1879,8 +1879,8 @@ static void __init imx6q_add_device_gpio_leds(void) {}
 }
 
 static struct gpio_keys_button imx6q_buttons[] = {
-	GPIO_BUTTON(SABRESD_VOLUME_UP, KEY_VOLUMEUP, 1, "volume-up", 0, 1),
-	GPIO_BUTTON(SABRESD_VOLUME_DN, KEY_VOLUMEDOWN, 1, "volume-down", 0, 1),
+	//GPIO_BUTTON(SABRESD_VOLUME_UP, KEY_VOLUMEUP, 1, "volume-up", 0, 1),
+	//GPIO_BUTTON(SABRESD_VOLUME_DN, KEY_VOLUMEDOWN, 1, "volume-down", 0, 1),
 	GPIO_BUTTON(SABRESD_POWER_OFF, KEY_POWER, 1, "power", 1, 1),
 };
 
