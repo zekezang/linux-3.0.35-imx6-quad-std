@@ -1,0 +1,6 @@
+menu "AAUUOO_CLASSFINDDEVICE"
+
+config AAUUOO_CLASSFINDDEVICE
+	tristate "CLASSFINDDEVICE zekezang"
+	
+endmenu
