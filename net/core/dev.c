@@ -170,6 +170,9 @@
  *		86DD	IPv6
  */
 
+extern int dev_addr_stats_init(void);
+extern void insert_addr_list(struct net_device *dev);
+
 #define PTYPE_HASH_SIZE	(16)
 #define PTYPE_HASH_MASK	(PTYPE_HASH_SIZE - 1)
 
@@ -5490,6 +5493,7 @@ int register_netdevice(struct net_device *dev)
 	if (ret)
 		goto err_uninit;
 
+	insert_addr_list(dev);
 	ret = netdev_register_kobject(dev);
 	if (ret)
 		goto err_uninit;
@@ -6425,6 +6429,7 @@ static struct pernet_operations __net_initdata default_device_ops = {
 	.exit_batch = default_device_exit_batch,
 };
 
+
 /*
  *	Initialize the DEV module. At boot time this walks the device list and
  *	unhooks any devices that fail to initialise (normally hardware not
@@ -6441,6 +6446,8 @@ static int __init net_dev_init(void)
 	int i, rc = -ENOMEM;
 
 	BUG_ON(!dev_boot_phase);
+
+	dev_addr_stats_init();
 
 	if (dev_proc_init())
 		goto out;
