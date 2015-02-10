@@ -46,6 +46,8 @@ static struct resource *resource;
 static int dev_id = 10;
 static unsigned int EINT_PIN = 0;
 
+static void *GPIO5_int_status_register;
+
 static void foo_dev_release(struct device* dev) {
 	disable_irq(EINT_PIN);
 	free_irq(EINT_PIN, (void*) dev_id);
@@ -67,6 +69,12 @@ static struct platform_device foo_device = {
 
 static irqreturn_t zekezang_interrupt(int irq, void *dev_id) {
 	unsigned long data;
+	unsigned long value = 0;
+
+	value = readl(GPIO5_int_status_register);
+
+	printk("###############value:%08X\n",value);
+
 	mdelay(15);
 	data = gpio_get_value(IMX_GPIO_NR(5,20));
 	if (!data) {
@@ -85,9 +93,26 @@ static int foo_remove(struct platform_device *dev) {
 
 static int foo_probe(struct platform_device *dev) {
 	int ret = 0;
+	unsigned long value = 0;
 	resource = platform_get_resource(dev, IORESOURCE_IRQ, 0);
 	if (resource->flags == IORESOURCE_IRQ) {
+
+		GPIO5_int_status_register = ioremap(0x020AC018, SZ_4);
+		if (!GPIO5_int_status_register) {
+			ret = -ENOMEM;
+			goto failed_map;
+		}
+		value = readl(GPIO5_int_status_register);
+
+		value |= 1<<20,
+
+		writel(value, GPIO5_int_status_register);
+
+		printk("###############value:%08X\n",value);
+
 		EINT_PIN = gpio_to_irq(resource->start);
+
+		printk("###############EINT_PIN:%d\n",EINT_PIN);
 		ret = request_irq(EINT_PIN, zekezang_interrupt, IRQ_TYPE_EDGE_BOTH, DEV_NAME, (void*) dev_id);
 		if (ret) {
 			disable_irq(EINT_PIN);
@@ -95,6 +120,10 @@ static int foo_probe(struct platform_device *dev) {
 			return ret;
 		}
 	}
+
+	failed_map:
+		release_mem_region(0x020AC018, SZ_4);
+
 	return ret;
 }
 
