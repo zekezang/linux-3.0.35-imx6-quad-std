@@ -6,3 +6,5 @@ source "drivers/aauuoo/can/Kconfig"
 
 source "drivers/aauuoo/eint/Kconfig"
 
+source "drivers/aauuoo/dma/Kconfig"
+

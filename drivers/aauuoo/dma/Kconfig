@@ -1,0 +1,6 @@
+menu "AAUUOO_DMA"
+
+config AAUUOO_DMA
+	tristate "DMA zekezang"
+	
+endmenu
